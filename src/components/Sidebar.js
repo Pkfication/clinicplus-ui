@@ -81,7 +81,7 @@ function Sidebar() {
               button 
               sx={{ pl: 4 }}
               selected={isActive('/employees')}
-              onClick={() => handleNavigation('/dashboard')}
+              onClick={() => handleNavigation('/employees')}
             >
               <ListItemText primary="List Employees" />
             </ListItem>

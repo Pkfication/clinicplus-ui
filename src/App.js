@@ -80,6 +80,7 @@ function App() {
         <Route path="/" element={<Home />}>
           <Route path="employees" element={<EmployeesList />} /> {/* Default child route */}
           <Route path="employees/:id" element={<EmployeeProfile />} /> {/* Nested route for EmployeeProfile */}
+          <Route index element={<Navigate to="employees" />} /> 
         </Route>
       </Routes>
       </Router>
