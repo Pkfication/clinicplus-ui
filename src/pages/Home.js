@@ -1,4 +1,4 @@
-// src/pages/Dashboard.js
+// src/pages/Home.js
 import React, { useEffect } from 'react';
 import { 
   Box, 
@@ -7,26 +7,27 @@ import {
 import { useNavigate } from 'react-router-dom';
 import Sidebar from '../components/Sidebar';
 import AppBarComponent from '../components/AppBarComponent';
+import { Outlet } from 'react-router-dom';
 
-function Dashboard({ children }) {
+function Home({ children }) {
   const navigate = useNavigate();
 
-  // Effect to check authentication
-  useEffect(() => {
-    const checkAuth = () => {
-      const isAuthenticated = 
-        localStorage.getItem('isAuthenticated') === 'true' && 
-        !!localStorage.getItem('token');
+  // // Effect to check authentication
+  // useEffect(() => {
+  //   const checkAuth = () => {
+  //     const isAuthenticated = 
+  //       localStorage.getItem('isAuthenticated') === 'true' && 
+  //       !!localStorage.getItem('token');
 
-      if (!isAuthenticated) {
-        console.log('Not authenticated, redirecting to login');
-        navigate('/login');
-      }
-    };
+  //     if (!isAuthenticated) {
+  //       console.log('Not authenticated, redirecting to login');
+  //       navigate('/login');
+  //     }
+  //   };
 
-    // Check authentication on mount
-    checkAuth();
-  }, [navigate]);
+  //   // Check authentication on mount
+  //   checkAuth();
+  // }, [navigate]);
 
   return (
     <Box sx={{ display: 'flex' }}>
@@ -49,11 +50,11 @@ function Dashboard({ children }) {
             p: 3
             }}
         >
-        {children || <div>Welcome to Dashboard</div>}
+        <Outlet />
         </Box>
       </Box>
     </Box>
   );
 }
 
-export default Dashboard;
+export default Home;

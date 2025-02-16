@@ -43,6 +43,8 @@ function Sidebar() {
         '& .MuiDrawer-paper': {
           width: drawerWidth,
           boxSizing: 'border-box',
+          // backgroundColor: 'background.paper', // Set background color to primary
+          // color: 'text.primary'
         },
       }}
       variant="permanent"
@@ -54,8 +56,8 @@ function Sidebar() {
           alignItems: 'center', 
           justifyContent: 'center', 
           padding: 2,
-          backgroundColor: 'primary.main',
-          color: 'white'
+          // backgroundColor: 'background.paper', // Set background color to primary
+          // color: 'text.primary' // Set text color to white for visibility
         }}
       >
         <Typography variant="h6">
@@ -81,9 +83,6 @@ function Sidebar() {
               selected={isActive('/employees')}
               onClick={() => handleNavigation('/dashboard')}
             >
-              <ListItemIcon>
-                <PeopleIcon />
-              </ListItemIcon>
               <ListItemText primary="List Employees" />
             </ListItem>
           </List>

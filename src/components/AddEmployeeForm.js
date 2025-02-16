@@ -24,7 +24,7 @@ function AddEmployeeForm({ open, onClose, onEmployeeAdded }) {
         password,
         salary: parseFloat(salary), // Convert salary to float
         phone_number: phoneNumber,
-        hire_date: hireDate,
+        hire_date: new Date(hireDate).toISOString(),
       };
 
       const response = await employeeService.addEmployee(employeeData);

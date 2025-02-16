@@ -31,7 +31,7 @@ function EditEmployeeForm({ open, onClose, employee }) {
         role,
         salary: parseFloat(salary),
         phone_number: phoneNumber,
-        hire_date: hireDate,
+        hire_date: new Date(hireDate).toISOString(),
       };
 
       const response = await employeeService.updateEmployee(employee.ID, updatedEmployeeData);

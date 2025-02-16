@@ -1,9 +1,10 @@
-// src/pages/EmployeesList.js
 import React, { useState, useEffect, useCallback } from 'react';
 import { 
   Box, 
   Typography, 
-  Fab 
+  Fab,
+  TextField,
+  CircularProgress
 } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import employeeService from '../services/employeeService';
@@ -13,6 +14,8 @@ import EditEmployeeForm from '../components/EditEmployeeForm';
 
 function EmployeesList() {
   const [employees, setEmployees] = useState([]);
+  const [totalEmployees, setTotalEmployees] = useState(0);
+  const [query, setQuery] = useState('');
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [page, setPage] = useState(0);
@@ -23,14 +26,16 @@ function EmployeesList() {
 
   const fetchEmployees = useCallback(async () => {
     try {
-      const data = await employeeService.fetchEmployees(page, rowsPerPage);
+      const { data, meta } = await employeeService.fetchEmployees(page, rowsPerPage, query);
+      console.log(data, meta)
       setEmployees(data);
+      setTotalEmployees(meta.total);
       setLoading(false);
     } catch (err) {
       setError('Failed to fetch employees');
       setLoading(false);
     }
-  }, [page, rowsPerPage]);
+  }, [page, rowsPerPage, query]);
 
   useEffect(() => {
     fetchEmployees();
@@ -41,18 +46,32 @@ function EmployeesList() {
     setEditDialogOpen(true);
   };
 
-  if (loading) return <Typography>Loading...</Typography>;
+  if (loading) {
+    return (
+        <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+            <CircularProgress />
+        </Box>
+    );
+}
   if (error) return <Typography color="error">{error}</Typography>;
 
-  const displayedEmployees = employees.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
+  // const displayedEmployees = filteredEmployees.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
 
   return (
     <Box sx={{ width: '100%', overflowX: 'auto' }}>
-      <Typography variant="h4" gutterBottom>
-        Employees List
-      </Typography>
+      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
+        <Typography variant="h5">Employees</Typography>
+        <TextField
+          variant="outlined"
+          placeholder="Search employees..."
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+          sx={{ width: '300px' }} // Adjust width as needed
+        />
+      </Box>
       <Table 
-        employees={displayedEmployees} 
+        employees={employees}
+        employeeCount={totalEmployees}
         page={page} 
         rowsPerPage={rowsPerPage} 
         onPageChange={(event, newPage) => setPage(newPage)} 
