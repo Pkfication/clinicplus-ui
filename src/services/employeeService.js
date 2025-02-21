@@ -47,6 +47,21 @@ const employeeService = {
       throw error; // Rethrow error for further handling in the calling component
     }
   },
+
+  assignShift: async (employeeId, shiftData) => {
+    const response = await apiClient.post(`/employees/${employeeId}/assign_shift`, shiftData);
+    return response.data;
+  },
+
+  clockIn: async (employeeId, shiftId) => {
+    const response = await apiClient.post(`/employees/${employeeId}/clockin`, { shift_id: shiftId });
+    return response.data;
+  },
+
+  clockOut: async (employeeId, shiftId) => {
+    const response = await apiClient.post(`/employees/${employeeId}/clockout`, { shift_id: shiftId });
+    return response.data;
+  },
 };
 
 export default employeeService;

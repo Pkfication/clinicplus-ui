@@ -4,6 +4,8 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import Login from './pages/Login';
 import Home from './pages/Home';
+import Shifts from './pages/Shifts';
+import ShiftDetail from './pages/ShiftDetail';
 import EmployeesList from './pages/EmployeesList';
 import EmployeeProfile from './pages/EmployeeProfile';
 import './App.css';
@@ -80,6 +82,8 @@ function App() {
         <Route path="/" element={<Home />}>
           <Route path="employees" element={<EmployeesList />} /> {/* Default child route */}
           <Route path="employees/:id" element={<EmployeeProfile />} /> {/* Nested route for EmployeeProfile */}
+          <Route path="shifts" element={<Shifts />} /> {/* New route for shifts */}
+          <Route path="shifts/:id" element={<ShiftDetail />} /> {/* New route for shift details */}
           <Route index element={<Navigate to="employees" />} /> 
         </Route>
       </Routes>

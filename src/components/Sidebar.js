@@ -15,6 +15,7 @@ import {
   ExpandLess, 
   ExpandMore, 
 } from '@mui/icons-material';
+import ScheduleIcon from '@mui/icons-material/Schedule'
 import { useNavigate, useLocation } from 'react-router-dom';
 
 const drawerWidth = 240;
@@ -66,27 +67,19 @@ function Sidebar() {
       </Box>
       
       <List>
-        {/* Employees Section */}
-        <ListItem button onClick={handleEmployeesClick}>
+        <ListItem button onClick={() => handleNavigation('/employees')}>
           <ListItemIcon>
             <PeopleIcon />
           </ListItemIcon>
           <ListItemText primary="Employees" />
-          {openEmployees ? <ExpandLess /> : <ExpandMore />}
         </ListItem>
-        
-        <Collapse in={openEmployees} timeout="auto" unmountOnExit>
-          <List component="div" disablePadding>
-            <ListItem 
-              button 
-              sx={{ pl: 4 }}
-              selected={isActive('/employees')}
-              onClick={() => handleNavigation('/employees')}
-            >
-              <ListItemText primary="List Employees" />
-            </ListItem>
-          </List>
-        </Collapse>
+
+        <ListItem button onClick={() => handleNavigation('/shifts')}>
+          <ListItemIcon>
+            <ScheduleIcon />
+          </ListItemIcon>
+        <ListItemText primary="Shifts" />
+      </ListItem>
       </List>
     </Drawer>
   );

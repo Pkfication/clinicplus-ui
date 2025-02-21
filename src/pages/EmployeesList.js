@@ -4,13 +4,15 @@ import {
   Typography, 
   Fab,
   TextField,
-  CircularProgress
+  CircularProgress,
+  Button
 } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import employeeService from '../services/employeeService';
-import Table from '../components/Table';
+import DynamicTable from '../components/DynamicTable';
 import AddEmployeeForm from '../components/AddEmployeeForm';
 import EditEmployeeForm from '../components/EditEmployeeForm';
+import { useNavigate } from 'react-router-dom';
 
 function EmployeesList() {
   const [employees, setEmployees] = useState([]);
@@ -24,10 +26,11 @@ function EmployeesList() {
   const [editDialogOpen, setEditDialogOpen] = useState(false);
   const [selectedEmployee, setSelectedEmployee] = useState(null);
 
+  const navigate = useNavigate();
+
   const fetchEmployees = useCallback(async () => {
     try {
       const { data, meta } = await employeeService.fetchEmployees(page, rowsPerPage, query);
-      console.log(data, meta)
       setEmployees(data);
       setTotalEmployees(meta.total);
       setLoading(false);
@@ -46,13 +49,27 @@ function EmployeesList() {
     setEditDialogOpen(true);
   };
 
+  const handleRowClick = (employeeId) => {
+    navigate(`/employees/${employeeId}`);
+  };
+
+
+  const employeeColumns = [
+    { id: 'ID', label: 'ID' },
+    { id: 'name', label: 'Name' },
+    { id: 'designation', label: 'Designation' },
+    { id: 'salary', label: 'Salary' },
+    { id: 'email', label: 'Email' },
+    { id: 'phone_number', label: 'Phone Number' },
+  ];
+
   if (loading) {
     return (
         <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
             <CircularProgress />
         </Box>
     );
-}
+  }
   if (error) return <Typography color="error">{error}</Typography>;
 
   // const displayedEmployees = filteredEmployees.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
@@ -69,18 +86,27 @@ function EmployeesList() {
           sx={{ width: '300px' }} // Adjust width as needed
         />
       </Box>
-      <Table 
-        employees={employees}
-        employeeCount={totalEmployees}
-        page={page} 
-        rowsPerPage={rowsPerPage} 
-        onPageChange={(event, newPage) => setPage(newPage)} 
-        onRowsPerPageChange={(event) => {
-          setRowsPerPage(parseInt(event.target.value, 10));
-          setPage(0);
-        }} 
-        onEditClick={handleEditClick} 
-      />
+
+      {employees.length == 0 ? (
+        <Typography variant="h6" align="center" sx={{ mt: 2 }}>
+          Oh oh! No Data available.
+        </Typography>
+      ) : (
+      <DynamicTable 
+          data={employees}
+          columns={employeeColumns}
+          page={page}
+          rowsPerPage={rowsPerPage}
+          showPagination={true}
+          onPageChange={(event, newPage) => setPage(newPage)}
+          onRowsPerPageChange={(event) => {
+            setRowsPerPage(parseInt(event.target.value, 10));
+            setPage(0);
+          }} 
+          totalCount={totalEmployees}
+          onRowClick={handleRowClick}
+        />
+      )}
       <Fab 
         color="primary" 
         aria-label="add" 
@@ -99,6 +125,7 @@ function EmployeesList() {
         onClose={() => setEditDialogOpen(false)} 
         employee={selectedEmployee} 
       />
+      
     </Box>
   );
 }
